@@ -3,7 +3,7 @@
 # First, we import necessary libraries:
 import numpy as np
 import pandas as pd
-
+from sklearn import linear_model
 
 def transform_data(X):
     """
@@ -25,6 +25,12 @@ def transform_data(X):
     """
     X_transformed = np.zeros((700, 21))
     # TODO: Enter your code here
+    for i, row in enumerate(X):
+        X_transformed[i, 0:5] = X[i, 0:5]
+        X_transformed[i, 5:10] = np.multiply(X[i, 0:5], X[i, 0:5])
+        X_transformed[i, 10:15] = np.exp(X[i, 0:5])
+        X_transformed[i, 15:20] = np.cos(X[i, 0:5])
+        X_transformed[i, 20] = 1
     assert X_transformed.shape == (700, 21)
     return X_transformed
 
@@ -46,6 +52,11 @@ def fit(X, y):
     w = np.zeros((21,))
     X_transformed = transform_data(X)
     # TODO: Enter your code here
+
+    ridgeModel = linear_model.Ridge(0.1,fit_intercept=False)
+    ridgeModel.fit(X_transformed, y)
+    w = ridgeModel.coef_
+    print(w)
     assert w.shape == (21,)
     return w
 
@@ -53,7 +64,7 @@ def fit(X, y):
 # Main function. You don't have to change this
 if __name__ == "__main__":
     # Data loading
-    data = pd.read_csv("train.csv")
+    data = pd.read_csv("b/train.csv")
     y = data["y"].to_numpy()
     data = data.drop(columns=["Id", "y"])
     # print a few data samples
@@ -63,4 +74,4 @@ if __name__ == "__main__":
     # The function retrieving optimal LR parameters
     w = fit(X, y)
     # Save results in the required format
-    np.savetxt("./results.csv", w, fmt="%.12f")
+    np.savetxt("b/results.csv", w, fmt="%.12f")
