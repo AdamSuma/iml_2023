@@ -64,7 +64,7 @@ def fit(X, y):
 # Main function. You don't have to change this
 if __name__ == "__main__":
     # Data loading
-    data = pd.read_csv("b/train.csv")
+    data = pd.read_csv("train.csv")
     y = data["y"].to_numpy()
     data = data.drop(columns=["Id", "y"])
     # print a few data samples
@@ -74,4 +74,4 @@ if __name__ == "__main__":
     # The function retrieving optimal LR parameters
     w = fit(X, y)
     # Save results in the required format
-    np.savetxt("b/results.csv", w, fmt="%.12f")
+    np.savetxt("./results.csv", w, fmt="%.12f")
